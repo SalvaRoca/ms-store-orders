@@ -5,11 +5,6 @@ import com.bassmania.msstoreorders.facade.ProductFacade;
 import com.bassmania.msstoreorders.model.Order;
 import com.bassmania.msstoreorders.model.OrderRequest;
 import com.bassmania.msstoreorders.model.Product;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatchException;
-import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +19,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductFacade productFacade;
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Override
     public List<Order> getOrders() {
@@ -56,14 +49,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrder(Order existingOrder, String patchBody) {
-        try {
-            JsonMergePatch jsonMergePatch = JsonMergePatch.fromJson(objectMapper.readTree(patchBody));
-            JsonNode target = jsonMergePatch.apply(objectMapper.readTree(objectMapper.writeValueAsString(existingOrder)));
-            Order patched = objectMapper.treeToValue(target, Order.class);
-            orderRepository.saveOrder(patched);
-            return patched;
-        } catch (JsonProcessingException | JsonPatchException e) {
+    public Order updateOrder(Order order, String status) {
+        if (status != null) {
+            order.setStatus(status);
+            return orderRepository.saveOrder(order);
+        } else {
             return null;
         }
     }

@@ -5,7 +5,6 @@ import com.bassmania.msstoreorders.model.OrderRequest;
 import com.bassmania.msstoreorders.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,33 +39,25 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody @Valid OrderRequest orderRequest) {
-        try {
-            Order order = orderService.createOrder(orderRequest);
+        Order order = orderService.createOrder(orderRequest);
 
-            if (order != null) {
-                return ResponseEntity.ok(order);
-            } else {
-                return ResponseEntity.badRequest().body("{\"errorMessage\": \"Some input data might be incorrect, please check and try again\"}");
-            }
-        } catch (DataIntegrityViolationException e) {
+        if (order != null) {
+            return ResponseEntity.ok(order);
+        } else {
             return ResponseEntity.badRequest().body("{\"errorMessage\": \"Some input data might be incorrect, please check and try again\"}");
         }
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<?> patchOrder(@PathVariable String id, @RequestBody String patchBody) {
+    public ResponseEntity<?> patchOrder(@PathVariable String id, @RequestParam String status) {
         Order existingOrder = orderService.getOrderById(id);
         if (existingOrder != null) {
-            try {
-                Order updatedProduct = orderService.updateOrder(existingOrder, patchBody);
+            Order updatedProduct = orderService.updateOrder(existingOrder, status);
 
-                if (updatedProduct != null) {
-                    return ResponseEntity.ok(updatedProduct);
-                } else {
-                    return ResponseEntity.badRequest().body("{\"errorMessage\": \"Some input data might be incorrect, please check and try again\"}");
-                }
-            } catch (DataIntegrityViolationException e) {
-                return ResponseEntity.badRequest().body("{\"errorMessage\": \"Order with reference " + existingOrder.getOrderRef() + " already existing, please try with another one\"}");
+            if (updatedProduct != null) {
+                return ResponseEntity.ok(updatedProduct);
+            } else {
+                return ResponseEntity.badRequest().body("{\"errorMessage\": \"Some input data might be incorrect, please check and try again\"}");
             }
         } else {
             return ResponseEntity.notFound().build();
