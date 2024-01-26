@@ -5,20 +5,18 @@ import com.bassmania.msstoreorders.facade.ProductFacade;
 import com.bassmania.msstoreorders.model.Order;
 import com.bassmania.msstoreorders.model.OrderRequest;
 import com.bassmania.msstoreorders.model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    @Autowired
-    private ProductFacade productFacade;
-
+    private final ProductFacade productFacade;
 
     @Override
     public List<Order> getOrders() {
