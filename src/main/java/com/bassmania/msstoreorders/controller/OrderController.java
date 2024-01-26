@@ -33,7 +33,7 @@ public class OrderController {
                             description = "Lista de pedidos",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = List.class)
+                                    schema = @Schema(implementation = Order.class)
                             )
                     ),
                     @ApiResponse(
