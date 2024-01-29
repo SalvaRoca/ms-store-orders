@@ -31,4 +31,4 @@ eureka:
     hostname: ${HOSTNAME:ms-store-orders}
 
 getProduct:
-  url: ${PRODUCTS_URL:http://ms-store-products/api/v1/products/%s}
+  url: http://ms-store-products/api/v1/products/%s
