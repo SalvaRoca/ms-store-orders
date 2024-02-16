@@ -22,16 +22,16 @@ public class ProductFacade {
 
         try {
             String url = String.format(getProductUrl, productRef);
-            log.info("Getting product with ID {}. Request to {}", productRef, url);
+            log.info("Getting product with productRef {}. Request to {}", productRef, url);
             return restTemplate.getForObject(url, Product.class);
         } catch (HttpClientErrorException e) {
-            log.error("Client Error: {}, Product with ID {}", e.getStatusCode(), productRef);
+            log.error("Client Error: {}, Product with productRef {}", e.getStatusCode(), productRef);
             return null;
         } catch (HttpServerErrorException e) {
-            log.error("Server Error: {}, Product with ID {}", e.getStatusCode(), productRef);
+            log.error("Server Error: {}, Product with productRef {}", e.getStatusCode(), productRef);
             return null;
         } catch (Exception e) {
-            log.error("Error: {}, Product with ID {}", e.getMessage(), productRef);
+            log.error("Error: {}, Product with productRef {}", e.getMessage(), productRef);
             return null;
         }
     }

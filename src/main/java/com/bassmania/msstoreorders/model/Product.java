@@ -11,11 +11,12 @@ import lombok.*;
 @Builder
 @ToString
 public class Product {
-    private Long id;
+    private String id;
     private String productRef;
     private String category;
     private String brand;
     private String model;
     private String description;
+    private String img;
     private Double price;
 }
